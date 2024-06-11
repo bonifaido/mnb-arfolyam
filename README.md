@@ -10,7 +10,7 @@ It tries to find the correct days if those days are holidays or weekends and no 
 By default, for USD and the current time of day:
 
 ```bash
-$ docker run --rm -it ghcr.io/bonifaido/mnb-arfolyam
+$ docker run --rm ghcr.io/bonifaido/mnb-arfolyam
 Querying currency: USD
 2024-06-11 -> 367.51
 2024-05-15 -> 356.69
@@ -28,7 +28,7 @@ Querying currency: USD
 For a given currency:
 
 ```bash
-$ docker run --rm -it ghcr.io/bonifaido/mnb-arfolyam -c EUR 2024-06-09
+$ docker run --rm ghcr.io/bonifaido/mnb-arfolyam -c EUR 2024-06-09
 Querying currency: EUR
 2024-06-07 -> 389.64
 2024-05-15 -> 386.3
