@@ -64,6 +64,10 @@
                     </from>
                     <to>
                         <image>ghcr.io/bonifaido/mnb-arfolyam</image>
+                        <auth>
+                            <username>bonifaido</username>
+                            <password>${env.GITHUB_TOKEN}</password>
+                        </auth>
                     </to>
                 </configuration>
             </plugin>
