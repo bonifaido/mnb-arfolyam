@@ -38,12 +38,12 @@ Querying currency: EUR
 
 ## Build
 ```bash
-./mvnw package jib:dockerBuild
+./mvnw compile jib:dockerBuild
 ```
 
 ## Push
 ```bash
-./mvnw jib:build -Djib.serialize=true
+./mvnw compile jib:build -Djib.serialize=true
 ```
 
 ### License
