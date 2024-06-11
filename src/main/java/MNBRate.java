@@ -1,3 +1,7 @@
+import com.github.rvesse.airline.SingleCommand;
+import com.github.rvesse.airline.annotations.Arguments;
+import com.github.rvesse.airline.annotations.Command;
+import com.github.rvesse.airline.annotations.Option;
 import mnb.MNBArfolyamServiceSoapImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -14,9 +18,16 @@ import java.time.format.DateTimeFormatter;
  MNB Rate query CLI for TAX-ing based on foreign currencies.
  The SOAP Service descriptor is taken from https://www.mnb.hu/arfolyamok.asmx
  */
-public class Main {
+@Command(name = "main")
+public class MNBRate {
 
-    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+    static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Option(name = {"-c", "--currency"}, description = "currency to query")
+    private String currency = "USD";
+
+    @Arguments(title = "date")
+    private String date = LocalDate.now().format(formatter);
 
     static LocalDate adjustDateIfNeeded(LocalDate date) {
         if (date.getDayOfWeek().equals(DayOfWeek.SATURDAY)) {
@@ -46,18 +57,8 @@ public class Main {
         return Double.parseDouble(rate);
     }
 
-    static public void main(String[] args) throws Exception {
-        String currency = "USD";
-        String dateStr = LocalDate.now().format(formatter);
-
-        LocalDate date = LocalDate.parse(dateStr, formatter);
-
-        if (args.length > 0) {
-            currency = args[0];
-        }
-        if (args.length > 1) {
-            date = LocalDate.parse(args[1], formatter);
-        }
+    private void run() throws Exception {
+        LocalDate date = LocalDate.parse(this.date, formatter);
 
         System.out.println("Querying currency: " + currency);
 
@@ -72,5 +73,11 @@ public class Main {
         rate = getRateFromMnb(currency, date);
 
         System.out.println(date + " -> " + rate);
+    }
+
+    public static void main(String[] args) throws Exception {
+        SingleCommand<MNBRate> parser = SingleCommand.singleCommand(MNBRate.class);
+        MNBRate cmd = parser.parse(args);
+        cmd.run();
     }
 }
